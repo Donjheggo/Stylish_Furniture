@@ -24,3 +24,25 @@ export async function SearchProducts(searchQuery: string) {
     }
   }
 }
+
+export async function GetProductById(id: string) {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select()
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      Alert.alert(error.message);
+      return undefined;
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      Alert.alert(error.message);
+      return undefined;
+    }
+  }
+}

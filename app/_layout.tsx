@@ -9,10 +9,10 @@ import { Platform, Image } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
-import { ThemeToggle } from "~/components/ThemeToggle";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import MessageButton from "~/components/message-button";
 import AuthProvider from "~/context/auth-context";
+import BackButton from "~/components/back-button";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -77,12 +77,6 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
-            name="cart"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
             name="(auth)"
             options={{
               title: "",
@@ -93,6 +87,7 @@ export default function RootLayout() {
             options={{
               title: "",
               headerShown: true,
+              headerLeft: () => <BackButton />,
               headerRight: () => <MessageButton />,
             }}
           />

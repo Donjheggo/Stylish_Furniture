@@ -1,10 +1,5 @@
 import { Tabs, Redirect } from "expo-router";
-import {
-  Package,
-  Armchair,
-  User,
-  ShoppingCart,
-} from "lucide-react-native";
+import { Package, Armchair, User, ShoppingCart } from "lucide-react-native";
 import { useAuth } from "~/context/auth-context";
 
 export default function TabLayout() {
@@ -56,6 +51,12 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="messages"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="product/[id]"
         options={{
           href: null,
         }}

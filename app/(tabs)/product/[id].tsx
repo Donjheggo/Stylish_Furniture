@@ -11,10 +11,8 @@ import { ShoppingCart } from "lucide-react-native";
 import { Alert } from "react-native";
 import { CartForm } from "~/lib/actions/carts";
 import { useAuth } from "~/context/auth-context";
-import { useRouter } from "expo-router";
 
 export default function Screen() {
-  const router = useRouter();
   const { user } = useAuth();
   const { id } = useLocalSearchParams();
   const [product, setProduct] = useState<ProductsT>();

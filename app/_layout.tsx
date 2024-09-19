@@ -11,7 +11,7 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
-import ShoppingCartButton from "~/components/cart-button";
+import MessageButton from "~/components/message-button";
 import AuthProvider from "~/context/auth-context";
 
 const LIGHT_THEME: Theme = {
@@ -69,12 +69,11 @@ export default function RootLayout() {
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <AuthProvider>
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack>
+        <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen
             name="index"
             options={{
               title: "",
-              headerShown: false,
             }}
           />
           <Stack.Screen
@@ -93,13 +92,8 @@ export default function RootLayout() {
             name="(tabs)"
             options={{
               title: "",
-              // headerLeft: () => (
-              //   <Image
-              //     source={require("../assets/images/favicon.png")}
-              //     style={{ width: 35, height: 35 }}
-              //   />
-              // ),
-              headerRight: () => <ShoppingCartButton />,
+              headerShown: true,
+              headerRight: () => <MessageButton />,
             }}
           />
         </Stack>

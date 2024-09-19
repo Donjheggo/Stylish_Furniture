@@ -9,151 +9,250 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      bills: {
+      carts: {
         Row: {
-          amount: number
-          billing_number: string
           created_at: string
-          due_date: string
           id: string
-          isPaid: boolean
-          name: string
-          penalty: number
-          penalty_date: string
+          owner_id: string
+          product_id: string
+          quantity: number
         }
         Insert: {
-          amount: number
-          billing_number: string
           created_at?: string
-          due_date: string
           id?: string
-          isPaid?: boolean
-          name: string
-          penalty: number
-          penalty_date: string
+          owner_id?: string
+          product_id?: string
+          quantity: number
         }
         Update: {
-          amount?: number
-          billing_number?: string
           created_at?: string
-          due_date?: string
           id?: string
-          isPaid?: boolean
-          name?: string
-          penalty?: number
-          penalty_date?: string
+          owner_id?: string
+          product_id?: string
+          quantity?: number
         }
         Relationships: [
           {
-            foreignKeyName: "bill_name_fkey"
-            columns: ["name"]
+            foreignKeyName: "carts_owner_id_fkey"
+            columns: ["owner_id"]
             isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["name"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "carts_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
           },
         ]
       }
-      clients: {
+      conversations: {
         Row: {
-          address: string
-          contact_number: number
+          admin_id: string
           created_at: string
           id: string
-          is_connected: boolean
-          meter_number: number
-          name: string
+          user_id: string
         }
         Insert: {
-          address: string
-          contact_number: number
+          admin_id?: string
           created_at?: string
           id?: string
-          is_connected?: boolean
-          meter_number: number
-          name: string
+          user_id?: string
         }
         Update: {
-          address?: string
-          contact_number?: number
+          admin_id?: string
           created_at?: string
           id?: string
-          is_connected?: boolean
-          meter_number?: number
-          name?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "conversations_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      payments: {
+      feedbacks: {
         Row: {
-          amount: number
-          bill_id: string
-          billing_number: string | null
-          client_name: string
           created_at: string
-          gcash_ref_no: number
           id: string
+          message: string
           owner_email: string
           owner_id: string
         }
         Insert: {
-          amount: number
-          bill_id?: string
-          billing_number?: string | null
-          client_name: string
           created_at?: string
-          gcash_ref_no: number
           id?: string
+          message: string
           owner_email: string
           owner_id?: string
         }
         Update: {
-          amount?: number
-          bill_id?: string
-          billing_number?: string | null
-          client_name?: string
           created_at?: string
-          gcash_ref_no?: number
           id?: string
+          message?: string
           owner_email?: string
           owner_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "payments_bill_id_fkey"
-            columns: ["bill_id"]
-            isOneToOne: false
-            referencedRelation: "bills"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payments_billing_number_fkey"
-            columns: ["billing_number"]
-            isOneToOne: false
-            referencedRelation: "bills"
-            referencedColumns: ["billing_number"]
-          },
-          {
-            foreignKeyName: "payments_client_name_fkey"
-            columns: ["client_name"]
-            isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["name"]
-          },
-          {
-            foreignKeyName: "payments_owner_email_fkey"
+            foreignKeyName: "feedbacks_owner_email_fkey"
             columns: ["owner_email"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["email"]
           },
           {
-            foreignKeyName: "payments_owner_id_fkey"
+            foreignKeyName: "feedbacks_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
+      }
+      messages: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          is_read: boolean
+          message: string
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message: string
+          receiver_id?: string
+          sender_id?: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          id: string
+          owner_email: string
+          owner_id: string
+          product_id: string
+          quantity: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_email: string
+          owner_id?: string
+          product_id?: string
+          quantity: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_email?: string
+          owner_id?: string
+          product_id?: string
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_owner_email_fkey"
+            columns: ["owner_email"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["email"]
+          },
+          {
+            foreignKeyName: "orders_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image: string | null
+          name: string
+          price: number
+          quantity: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          image?: string | null
+          name: string
+          price: number
+          quantity: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image?: string | null
+          name?: string
+          price?: number
+          quantity?: number
+        }
+        Relationships: []
       }
       users: {
         Row: {

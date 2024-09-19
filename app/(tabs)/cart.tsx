@@ -6,7 +6,7 @@ export default function Screen() {
     <SafeAreaView className="h-full">
       <ScrollView>
         <View className="px-5">
-          <Text>Cart Screen</Text>
+          <Text>New Cart Screenssss</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

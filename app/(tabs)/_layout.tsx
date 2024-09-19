@@ -1,17 +1,14 @@
 import { Tabs, Redirect } from "expo-router";
 import {
-  Home,
   Package,
   Armchair,
-  ShoppingCart,
   User,
-  MessageSquareMore,
+  ShoppingCart,
 } from "lucide-react-native";
 import { useAuth } from "~/context/auth-context";
 
 export default function TabLayout() {
   const { user } = useAuth();
-
   if (!user) {
     return <Redirect href="/sign-in" />;
   }
@@ -35,7 +32,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Armchair size={28} color={color} />,
         }}
       />
-
+      <Tabs.Screen
+        name="cart"
+        options={{
+          title: "Cart",
+          tabBarIcon: ({ color }) => <ShoppingCart size={28} color={color} />,
+        }}
+      />
       <Tabs.Screen
         name="orders"
         options={{
@@ -43,20 +46,18 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Package size={28} color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="messages"
-        options={{
-          title: "Messages",
-          tabBarIcon: ({ color }) => (
-            <MessageSquareMore size={28} color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <User size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

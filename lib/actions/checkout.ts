@@ -41,7 +41,7 @@ export async function GetTotalShippingAndTotalPrice(user_id: string) {
   return {
     totalPrice: totalPrice,
     totalShippingFee: totalShippingFee,
-    totalOrderPrice: totalPrice + totalShippingFee,
+    totalPayable: totalPrice + totalShippingFee,
   };
 }
 

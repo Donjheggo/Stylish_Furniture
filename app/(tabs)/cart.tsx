@@ -14,7 +14,7 @@ export default function Screen() {
   const [prices, setPrices] = useState({
     totalPrice: 0,
     totalShipping: 0,
-    totalOrderPrice: 0,
+    totalPayable: 0,
   });
 
   const fetchCardAndPrices = async () => {
@@ -25,7 +25,7 @@ export default function Screen() {
     setPrices({
       totalPrice: data?.totalPrice || 0,
       totalShipping: data?.totalShippingFee || 0,
-      totalOrderPrice: data?.totalOrderPrice || 0,
+      totalPayable: data?.totalPayable || 0,
     });
   };
 
@@ -77,11 +77,11 @@ export default function Screen() {
             </View>
             <View className="flex-row items-center justify-between flex-1">
               <View>
-                <Text>Total Price:</Text>
+                <Text>Total Payable:</Text>
               </View>
               <View>
                 <Text className="text-2xl font-semibold">
-                  ₱ {prices.totalOrderPrice.toLocaleString()}
+                  ₱ {prices.totalPayable.toLocaleString()}
                 </Text>
               </View>
             </View>

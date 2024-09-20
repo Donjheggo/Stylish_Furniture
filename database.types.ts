@@ -226,6 +226,7 @@ export type Database = {
           completed_at: string | null
           contact_number: number
           created_at: string
+          delivery_schedule: string | null
           delivery_status: Database["public"]["Enums"]["DELIVERY_STATUS"]
           id: string
           name: string
@@ -240,6 +241,7 @@ export type Database = {
           completed_at?: string | null
           contact_number: number
           created_at?: string
+          delivery_schedule?: string | null
           delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
           id?: string
           name: string
@@ -254,6 +256,7 @@ export type Database = {
           completed_at?: string | null
           contact_number?: number
           created_at?: string
+          delivery_schedule?: string | null
           delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
           id?: string
           name?: string
@@ -282,7 +285,7 @@ export type Database = {
           name: string
           price: number
           quantity: number
-          shipping: number | null
+          shipping_fee: number | null
         }
         Insert: {
           created_at?: string
@@ -292,7 +295,7 @@ export type Database = {
           name: string
           price: number
           quantity: number
-          shipping?: number | null
+          shipping_fee?: number | null
         }
         Update: {
           created_at?: string
@@ -302,7 +305,7 @@ export type Database = {
           name?: string
           price?: number
           quantity?: number
-          shipping?: number | null
+          shipping_fee?: number | null
         }
         Relationships: []
       }

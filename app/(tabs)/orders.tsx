@@ -22,8 +22,6 @@ export default function Screen() {
     fetchOrders();
   }, []);
 
-  console.log(data);
-
   return (
     <SafeAreaView className="h-full">
       <ScrollView>

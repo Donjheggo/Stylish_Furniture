@@ -28,7 +28,7 @@ export default function Screen() {
   const addToCart = async () => {
     try {
       const success = await CartForm({
-        owner_id: user?.id || "",
+        user_id: user?.id || "",
         product_id: id as string,
         quantity: 1,
       });

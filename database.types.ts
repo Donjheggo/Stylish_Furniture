@@ -13,28 +13,28 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          owner_id: string
           product_id: string
           quantity: number
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          owner_id?: string
           product_id?: string
           quantity: number
+          user_id?: string
         }
         Update: {
           created_at?: string
           id?: string
-          owner_id?: string
           product_id?: string
           quantity?: number
+          user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "carts_owner_id_fkey"
-            columns: ["owner_id"]
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -175,51 +175,97 @@ export type Database = {
           },
         ]
       }
-      orders: {
+      order_items: {
         Row: {
           created_at: string
           id: string
-          owner_email: string
-          owner_id: string
-          product_id: string
-          quantity: number
+          order_id: string | null
+          price: number | null
+          product_id: string | null
+          quantity: number | null
+          shipping_fee: number | null
         }
         Insert: {
           created_at?: string
           id?: string
-          owner_email: string
-          owner_id?: string
-          product_id?: string
-          quantity: number
+          order_id?: string | null
+          price?: number | null
+          product_id?: string | null
+          quantity?: number | null
+          shipping_fee?: number | null
         }
         Update: {
           created_at?: string
           id?: string
-          owner_email?: string
-          owner_id?: string
-          product_id?: string
-          quantity?: number
+          order_id?: string | null
+          price?: number | null
+          product_id?: string | null
+          quantity?: number | null
+          shipping_fee?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "orders_owner_email_fkey"
-            columns: ["owner_email"]
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["email"]
-          },
-          {
-            foreignKeyName: "orders_owner_id_fkey"
-            columns: ["owner_id"]
-            isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "orders_product_id_fkey"
+            foreignKeyName: "order_items_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address: string
+          completed_at: string | null
+          created_at: string
+          delivery_status: Database["public"]["Enums"]["DELIVERY_STATUS"]
+          id: string
+          name: string
+          payment_method: Database["public"]["Enums"]["PAYMENT_METHOD"]
+          price: number
+          shipping_fee: number
+          total_price: number
+          user_id: string
+        }
+        Insert: {
+          address: string
+          completed_at?: string | null
+          created_at?: string
+          delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
+          id?: string
+          name: string
+          payment_method: Database["public"]["Enums"]["PAYMENT_METHOD"]
+          price: number
+          shipping_fee: number
+          total_price: number
+          user_id?: string
+        }
+        Update: {
+          address?: string
+          completed_at?: string | null
+          created_at?: string
+          delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
+          id?: string
+          name?: string
+          payment_method?: Database["public"]["Enums"]["PAYMENT_METHOD"]
+          price?: number
+          shipping_fee?: number
+          total_price?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_owner_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -233,6 +279,7 @@ export type Database = {
           name: string
           price: number
           quantity: number
+          shipping: number | null
         }
         Insert: {
           created_at?: string
@@ -242,6 +289,7 @@ export type Database = {
           name: string
           price: number
           quantity: number
+          shipping?: number | null
         }
         Update: {
           created_at?: string
@@ -251,6 +299,7 @@ export type Database = {
           name?: string
           price?: number
           quantity?: number
+          shipping?: number | null
         }
         Relationships: []
       }
@@ -294,6 +343,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      DELIVERY_STATUS: "PENDING" | "OUT FOR DELIVERY" | "COMPLETED"
+      PAYMENT_METHOD: "COD"
       USER_ROLE: "USER" | "ADMIN"
     }
     CompositeTypes: {

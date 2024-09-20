@@ -77,6 +77,13 @@ export async function GetCarts(id: string) {
   }
 }
 
+type CartData = {
+  quantity: number;
+  product_id: string;
+  products: {
+    quantity: number;
+  }[];
+};
 
 export async function IncreaseQuantity(id: string) {
   try {
@@ -104,10 +111,10 @@ export async function IncreaseQuantity(id: string) {
     }
 
     // Type assertion to help TypeScript understand the structure
-    const typedCartData = cartData as any;
+    const typedCartData = cartData as CartData;
 
-    const currentCartQuantity = cartData.quantity;
-    const availableProductQuantity = cartData.products.quantity;
+    const currentCartQuantity = typedCartData.quantity;
+    const availableProductQuantity = typedCartData.quantity;
 
     // Check if we've reached the limit
     if (currentCartQuantity >= availableProductQuantity) {

@@ -78,9 +78,9 @@ const SignIn = () => {
         disabled={isLoading}
         onPress={signInWithEmail}
         variant="default"
-        className="text-white mt-2"
+        className="mt-2"
       >
-        <Text>Sign in</Text>
+        <Text className="text-white">Sign in</Text>
       </Button>
       <Text className="dark:text-secondary">
         Don't have an account?

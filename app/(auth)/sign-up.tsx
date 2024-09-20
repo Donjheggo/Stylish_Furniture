@@ -81,10 +81,10 @@ const SignUp = () => {
         size="lg"
         onPress={signUpWithEmail}
         variant="default"
-        className="text-white mt-2"
+        className="mt-2"
         disabled={isLoading}
       >
-        <Text>Create Account</Text>
+        <Text className="text-white">Create Account</Text>
       </Button>
       <Text className="dark:text-secondary">
         Already have an account?

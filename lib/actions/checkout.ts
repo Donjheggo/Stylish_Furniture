@@ -1,6 +1,13 @@
 import { supabase } from "../supabase";
 import { Alert } from "react-native";
 
+export type CheckoutT = {
+  user_id: string;
+  name: string;
+  address: string;
+  contact_number: number | string;
+};
+
 export async function GetTotalShippingAndTotalPrice(user_id: string) {
   // Step 1: Fetch Cart Items
   const { data: cartItems, error: cartError } = await supabase
@@ -45,19 +52,17 @@ export async function GetTotalShippingAndTotalPrice(user_id: string) {
   };
 }
 
-export type CheckoutT = {
-  user_id: string;
-  name: string;
-  address: string;
-  contact_number: number | string;
-}
-
-export async function Checkout(form:CheckoutT) {
-
+export async function Checkout(form: CheckoutT) {
   // Step 0: Validate Input Fields
-  if(!form.name || !form.contact_number || !form.address){
-    Alert.alert("Please complete all input fields.")
+  if (!form.name || !form.contact_number || !form.address) {
+    Alert.alert("Please complete all input fields.");
+    return false;
   }
+  if (!Number(form.contact_number)) {
+    Alert.alert("Please input correct contact number");
+    return false;
+  }
+
 
   // Step 1: Fetch Cart Items
   const { data: cartItems, error: cartError } = await supabase
@@ -67,7 +72,7 @@ export async function Checkout(form:CheckoutT) {
 
   if (cartError) {
     Alert.alert("Error fetching cart items:", cartError.message);
-    return;
+    return false;
   }
 
   const productIds = cartItems.map((item) => item.product_id);
@@ -80,7 +85,7 @@ export async function Checkout(form:CheckoutT) {
 
   if (productsError) {
     Alert.alert("Error fetching products:", productsError.message);
-    return;
+    return false;
   }
 
   // Calculate total price and shipping fee
@@ -117,7 +122,7 @@ export async function Checkout(form:CheckoutT) {
 
   if (orderError) {
     Alert.alert("Error inserting order:", orderError.message);
-    return;
+    return false;
   }
 
   const orderId = order[0].id;
@@ -140,7 +145,7 @@ export async function Checkout(form:CheckoutT) {
 
   if (orderItemsError) {
     Alert.alert("Error inserting order items:", orderItemsError.message);
-    return;
+    return false;
   }
 
   // Step 5: Update Product Quantities
@@ -170,6 +175,7 @@ export async function Checkout(form:CheckoutT) {
   if (clearCartError) {
     Alert.alert("Error clearing cart:", clearCartError.message);
   } else {
-    console.log("Order placed successfully and cart cleared!");
+    Alert.alert("Order Submitted.");
+    return true;
   }
 }

@@ -8,8 +8,10 @@ import { useAuth } from "~/context/auth-context";
 import { Alert } from "react-native";
 import { Checkout, type CheckoutT } from "~/lib/actions/checkout";
 import { GetTotalShippingAndTotalPrice } from "~/lib/actions/checkout";
+import { useRouter } from "expo-router";
 
 export default function Screen() {
+  const router = useRouter();
   const { user } = useAuth();
   const [prices, setPrices] = useState({
     totalPrice: 0,
@@ -25,9 +27,24 @@ export default function Screen() {
 
   const handleSubmit = async () => {
     try {
-      await Checkout(form);
-      setPrices({ totalPrice: 0, totalShipping: 0, totalPayable: 0 });
-      Alert.alert("Success")
+      const success = await Checkout(form);
+      if (success) {
+        setForm({
+          user_id: user?.id || "",
+          name: "",
+          address: "",
+          contact_number: "",
+        });
+        setPrices({
+          totalPrice: 0,
+          totalShipping: 0,
+          totalPayable: 0,
+        });
+        router.push("/(tabs)/orders");
+        return success;
+      } else {
+        return;
+      }
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);

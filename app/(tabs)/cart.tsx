@@ -7,8 +7,10 @@ import { supabase } from "~/lib/supabase";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { GetTotalShippingAndTotalPrice } from "~/lib/actions/checkout";
+import { useRouter } from "expo-router";
 
 export default function Screen() {
+  const router = useRouter();
   const { user } = useAuth();
   const [carts, setCarts] = useState<CartItemT[]>([]);
   const [prices, setPrices] = useState({
@@ -17,7 +19,7 @@ export default function Screen() {
     totalPayable: 0,
   });
 
-  const fetchCardAndPrices = async () => {
+  const fetchCartAndPrices = async () => {
     const carts = await GetCarts(user?.id || "");
     setCarts(carts || []);
 
@@ -30,7 +32,7 @@ export default function Screen() {
   };
 
   useEffect(() => {
-    fetchCardAndPrices();
+    fetchCartAndPrices();
 
     const subscription = supabase
       .channel("public:carts")
@@ -42,7 +44,7 @@ export default function Screen() {
           table: "carts",
           filter: `user_id=eq.${user?.id}`,
         },
-        fetchCardAndPrices
+        fetchCartAndPrices
       )
       .subscribe();
 
@@ -86,7 +88,11 @@ export default function Screen() {
               </View>
             </View>
           </View>
-          <Button size="lg" className="mt-2">
+          <Button
+            size="lg"
+            className="mt-2"
+            onPress={() => router.push("/(tabs)/checkout")}
+          >
             <Text className="text-white" style={{ fontSize: 20 }}>
               Checkout
             </Text>
@@ -101,7 +107,7 @@ type Product = {
   image: string;
   name: string;
   price: number;
-  shipping: number;
+  shipping_fee: number;
 };
 
 export type CartItemT = {

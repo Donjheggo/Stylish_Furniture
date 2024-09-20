@@ -50,6 +50,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="checkout"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="messages"
         options={{
           href: null,

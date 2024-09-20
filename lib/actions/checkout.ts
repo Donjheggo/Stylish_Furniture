@@ -18,7 +18,7 @@ export async function GetTotalShippingAndTotalPrice(user_id: string) {
   // Step 2: Fetch Products
   const { data: products, error: productsError } = await supabase
     .from("products")
-    .select("id, name, price, shipping, quantity")
+    .select("id, name, price, shipping_fee, quantity")
     .in("id", productIds);
 
   if (productsError) {
@@ -34,7 +34,7 @@ export async function GetTotalShippingAndTotalPrice(user_id: string) {
     const product = products.find((p) => p.id === cartItem.product_id);
     if (product) {
       totalPrice += product.price * cartItem.quantity;
-      totalShippingFee += product.shipping * cartItem.quantity;
+      totalShippingFee += product.shipping_fee * cartItem.quantity;
     }
   });
 
@@ -45,12 +45,25 @@ export async function GetTotalShippingAndTotalPrice(user_id: string) {
   };
 }
 
-export async function Checkout(user_id: string, name: string, address: string) {
+export type CheckoutT = {
+  user_id: string;
+  name: string;
+  address: string;
+  contact_number: number | string;
+}
+
+export async function Checkout(form:CheckoutT) {
+
+  // Step 0: Validate Input Fields
+  if(!form.name || !form.contact_number || !form.address){
+    Alert.alert("Please complete all input fields.")
+  }
+
   // Step 1: Fetch Cart Items
   const { data: cartItems, error: cartError } = await supabase
     .from("carts")
     .select("product_id, quantity")
-    .eq("user_id", user_id);
+    .eq("user_id", form.user_id);
 
   if (cartError) {
     Alert.alert("Error fetching cart items:", cartError.message);
@@ -62,7 +75,7 @@ export async function Checkout(user_id: string, name: string, address: string) {
   // Step 2: Fetch Products
   const { data: products, error: productsError } = await supabase
     .from("products")
-    .select("id, name, price, shipping, quantity")
+    .select("id, name, price, shipping_fee, quantity")
     .in("id", productIds);
 
   if (productsError) {
@@ -78,23 +91,24 @@ export async function Checkout(user_id: string, name: string, address: string) {
     const product = products.find((p) => p.id === cartItem.product_id);
     if (product) {
       totalPrice += product.price * cartItem.quantity;
-      totalShippingFee += product.shipping * cartItem.quantity;
+      totalShippingFee += product.shipping_fee * cartItem.quantity;
     }
   });
 
-  const totalOrderPrice = totalPrice + totalShippingFee;
+  const totalPayable = totalPrice + totalShippingFee;
 
   // Step 3: Insert Order
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .insert([
       {
-        user_id: user_id,
-        name: name,
-        address: address,
-        price: totalPrice,
-        shipping_fee: totalShippingFee,
-        total_price: totalOrderPrice,
+        user_id: form.user_id,
+        name: form.name,
+        address: form.address,
+        contact_number: Number(form.contact_number),
+        total_price: totalPrice,
+        total_shipping_fee: totalShippingFee,
+        total_payable: totalPayable,
         delivery_status: "PENDING",
         payment_method: "COD",
       },
@@ -116,7 +130,7 @@ export async function Checkout(user_id: string, name: string, address: string) {
       product_id: cartItem.product_id,
       quantity: cartItem.quantity,
       price: product?.price,
-      shipping_fee: product?.shipping,
+      shipping_fee: product?.shipping_fee,
     };
   });
 
@@ -135,7 +149,7 @@ export async function Checkout(user_id: string, name: string, address: string) {
     const newQuantity = product?.quantity - cartItem.quantity;
 
     const { error: updateProductError } = await supabase
-      .from("product")
+      .from("products")
       .update({ quantity: newQuantity })
       .eq("id", cartItem.product_id);
 
@@ -149,9 +163,9 @@ export async function Checkout(user_id: string, name: string, address: string) {
 
   // Step 6: Clear Cart
   const { error: clearCartError } = await supabase
-    .from("cart")
+    .from("carts")
     .delete()
-    .eq("user_id", user_id);
+    .eq("user_id", form.user_id);
 
   if (clearCartError) {
     Alert.alert("Error clearing cart:", clearCartError.message);

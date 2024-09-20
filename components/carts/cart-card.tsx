@@ -46,7 +46,7 @@ export default function CartCard({ item }: { item: CartItemT }) {
           </View>
           <View className="flex-row items-center">
             <Text className="text-md">
-              ₱ {item.products.shipping.toLocaleString()} shipping fee
+              ₱ {item.products.shipping_fee.toLocaleString()} shipping fee
             </Text>
           </View>
           <Text className="text-lg font-semibold">{item.products.name}</Text>

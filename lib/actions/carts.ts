@@ -59,7 +59,7 @@ export async function GetCarts(id: string) {
   try {
     const { data, error } = await supabase
       .from("carts")
-      .select(`*, products:product_id ( name, image, price, shipping )`)
+      .select(`*, products:product_id ( name, image, price, shipping_fee )`)
       .eq("user_id", id)
       .order("created_at", { ascending: false });
 

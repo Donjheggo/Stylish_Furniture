@@ -224,40 +224,43 @@ export type Database = {
         Row: {
           address: string
           completed_at: string | null
+          contact_number: number
           created_at: string
           delivery_status: Database["public"]["Enums"]["DELIVERY_STATUS"]
           id: string
           name: string
           payment_method: Database["public"]["Enums"]["PAYMENT_METHOD"]
-          price: number
-          shipping_fee: number
+          total_payable: number
           total_price: number
+          total_shipping_fee: number
           user_id: string
         }
         Insert: {
           address: string
           completed_at?: string | null
+          contact_number: number
           created_at?: string
           delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
           id?: string
           name: string
           payment_method: Database["public"]["Enums"]["PAYMENT_METHOD"]
-          price: number
-          shipping_fee: number
+          total_payable: number
           total_price: number
+          total_shipping_fee: number
           user_id?: string
         }
         Update: {
           address?: string
           completed_at?: string | null
+          contact_number?: number
           created_at?: string
           delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
           id?: string
           name?: string
           payment_method?: Database["public"]["Enums"]["PAYMENT_METHOD"]
-          price?: number
-          shipping_fee?: number
+          total_payable?: number
           total_price?: number
+          total_shipping_fee?: number
           user_id?: string
         }
         Relationships: [

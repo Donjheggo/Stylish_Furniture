@@ -25,7 +25,7 @@ export default function Screen() {
           <SearchBar />
           <View
             style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
-            className="gap-2 mt-2"
+            className="gap-2 mt-5"
           >
             {products?.map((item, index) => (
               <ProductCard item={item} key={index} />

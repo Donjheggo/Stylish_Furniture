@@ -4,7 +4,6 @@ import { OrdersT } from "~/app/(tabs)/orders";
 import { Link } from "expo-router";
 
 export default function OrderCard({ item }: { item: OrdersT }) {
-  console.log({ pathname: "/(tabs)/order/[id]", params: { id: item.id } });
   return (
     <Link
       href={{ pathname: "/(tabs)/order/[id]", params: { id: item.id } }}

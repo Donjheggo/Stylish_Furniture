@@ -47,7 +47,7 @@ export default function Screen() {
     <SafeAreaView className="h-full">
       <ScrollView>
         <View className="p-5">
-          <Text className="text-center text-2xl font-semibold">
+          <Text className="text-center text-3xl font-semibold">
             {user?.email}
           </Text>
           <View className="mt-5">

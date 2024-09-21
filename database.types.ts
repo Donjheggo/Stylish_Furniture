@@ -48,42 +48,6 @@ export type Database = {
           },
         ]
       }
-      conversations: {
-        Row: {
-          admin_id: string
-          created_at: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          admin_id?: string
-          created_at?: string
-          id?: string
-          user_id?: string
-        }
-        Update: {
-          admin_id?: string
-          created_at?: string
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "conversations_admin_id_fkey"
-            columns: ["admin_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "conversations_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       feedbacks: {
         Row: {
           created_at: string
@@ -134,7 +98,7 @@ export type Database = {
           sender_id: string
         }
         Insert: {
-          conversation_id?: string
+          conversation_id: string
           created_at?: string
           id?: string
           is_read?: boolean
@@ -152,13 +116,6 @@ export type Database = {
           sender_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "messages_conversation_id_fkey"
-            columns: ["conversation_id"]
-            isOneToOne: false
-            referencedRelation: "conversations"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "messages_receiver_id_fkey"
             columns: ["receiver_id"]
@@ -228,6 +185,7 @@ export type Database = {
           created_at: string
           delivery_schedule: string | null
           delivery_status: Database["public"]["Enums"]["DELIVERY_STATUS"]
+          gcash_reference_number: string | null
           id: string
           name: string
           payment_method: Database["public"]["Enums"]["PAYMENT_METHOD"]
@@ -243,6 +201,7 @@ export type Database = {
           created_at?: string
           delivery_schedule?: string | null
           delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
+          gcash_reference_number?: string | null
           id?: string
           name: string
           payment_method: Database["public"]["Enums"]["PAYMENT_METHOD"]
@@ -258,6 +217,7 @@ export type Database = {
           created_at?: string
           delivery_schedule?: string | null
           delivery_status?: Database["public"]["Enums"]["DELIVERY_STATUS"]
+          gcash_reference_number?: string | null
           id?: string
           name?: string
           payment_method?: Database["public"]["Enums"]["PAYMENT_METHOD"]
@@ -350,7 +310,7 @@ export type Database = {
     }
     Enums: {
       DELIVERY_STATUS: "PENDING" | "OUT FOR DELIVERY" | "COMPLETED"
-      PAYMENT_METHOD: "COD"
+      PAYMENT_METHOD: "COD" | "GCASH"
       USER_ROLE: "USER" | "ADMIN"
     }
     CompositeTypes: {

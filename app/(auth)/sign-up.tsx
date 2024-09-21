@@ -29,7 +29,7 @@ const SignUp = () => {
 
     setLoading(false);
     if (error) Alert.alert(error.message);
-    if (session) router.replace("/home");
+    if (session) router.replace("/products");
   }
 
   return (

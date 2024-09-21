@@ -52,9 +52,9 @@ export default function Screen() {
           </Text>
           <View className="mt-5">
             <ProfileCard name="Cart Items" number={data.carts} />
-            <ProfileCard name="Completed Orders" number={data.completed} />
-            <ProfileCard name="Out For Delivery" number={data.delivery} />
             <ProfileCard name="Pending Orders" number={data.pending} />
+            <ProfileCard name="Out For Delivery" number={data.delivery} />
+            <ProfileCard name="Completed Orders" number={data.completed} />
           </View>
         </View>
       </ScrollView>

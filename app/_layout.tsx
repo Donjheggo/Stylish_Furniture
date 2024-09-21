@@ -13,6 +13,7 @@ import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import MessageButton from "~/components/message-button";
 import AuthProvider from "~/context/auth-context";
 import BackButton from "~/components/back-button";
+import { usePathname } from "expo-router";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -32,6 +33,7 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const pathname = usePathname();
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
@@ -86,8 +88,9 @@ export default function RootLayout() {
             name="(tabs)"
             options={{
               title: "",
-              headerShown: true,
-              headerLeft: () => <BackButton />,
+              headerShown: pathname === "/messages" ? false : true,
+              headerLeft:
+                pathname !== "/products" ? () => <BackButton /> : () => "",
               headerRight: () => <MessageButton />,
             }}
           />

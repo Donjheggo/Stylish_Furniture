@@ -92,7 +92,6 @@ export default function Screen() {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
-        keyboardVerticalOffset={100}
       >
         <FlatList
           ref={flatListRef}

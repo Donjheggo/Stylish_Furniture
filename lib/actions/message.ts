@@ -29,35 +29,6 @@ export async function SendMessage(form: MessageT) {
   }
 }
 
-export async function Generate50Messages(user_id:string) {
-  try {
-    for (let i = 0; i < 50; i++) {
-      const { error } = await supabase
-        .from("messages")
-        .insert([
-          {
-            sender_id: user_id,
-            receiver_id: process.env.EXPO_PUBLIC_ADMIN_ID || "",
-            message: "Wewness",
-            conversation_id: `${user_id}${process.env.EXPO_PUBLIC_ADMIN_ID}`,
-          },
-        ])
-        .select();
-      if (error) {
-        Alert.alert(error.message);
-        return false;
-      }
-    }
-
-    return true;
-  } catch (error) {
-    if (error instanceof Error) {
-      Alert.alert(error.message);
-      return false;
-    }
-  }
-}
-
 export async function GetMessages(
   user_id: string,
   page: number,

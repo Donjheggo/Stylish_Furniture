@@ -17,7 +17,7 @@ export default function SearchBar() {
       <Input
         style={{paddingLeft: 40, fontSize: 20}}
         className="dark:bg-black dark:text-white"
-        placeholder=""
+        placeholder="Search..."
         defaultValue={params.query}
         onChangeText={(text) => {
           handleSearch(text);

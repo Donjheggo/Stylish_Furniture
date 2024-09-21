@@ -41,25 +41,24 @@ export async function GetPendingOrders(user_id: string) {
 }
 
 export async function GetDeliveryOrders(user_id: string) {
-    try {
-      const { data, error } = await supabase
-        .from("orders")
-        .select("*")
-        .eq("user_id", user_id)
-        .eq("delivery_status", "OUT FOR DELIVERY");
-      if (error) {
-        Alert.alert(error.message);
-        return 0;
-      }
-      return data.length || 0;
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-        return 0;
-      }
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*")
+      .eq("user_id", user_id)
+      .eq("delivery_status", "OUT FOR DELIVERY");
+    if (error) {
+      Alert.alert(error.message);
+      return 0;
+    }
+    return data.length || 0;
+  } catch (error) {
+    if (error instanceof Error) {
+      Alert.alert(error.message);
+      return 0;
     }
   }
-  
+}
 
 export async function GetCompletedOrders(user_id: string) {
   try {
@@ -87,15 +86,21 @@ export async function GetCartItems(user_id: string) {
       .from("carts")
       .select("*")
       .eq("user_id", user_id);
+
     if (error) {
       Alert.alert(error.message);
       return 0;
     }
-    return data.length || 0
+
+    // Sum up the quantities
+    const totalQuantity = data.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    return totalQuantity;
+
   } catch (error) {
     if (error instanceof Error) {
       Alert.alert(error.message);
       return 0;
     }
+    return 0;
   }
 }

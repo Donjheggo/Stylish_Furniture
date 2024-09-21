@@ -1,5 +1,4 @@
 import {
-  GetTotalOrders,
   GetCompletedOrders,
   GetPendingOrders,
   GetDeliveryOrders,
@@ -9,11 +8,11 @@ import { View, SafeAreaView, ScrollView } from "react-native";
 import { Text } from "~/components/ui/text";
 import { useAuth } from "~/context/auth-context";
 import { useState, useEffect } from "react";
+import ProfileCard from "~/components/profile/profile-cards";
 
 export default function Screen() {
   const { user } = useAuth();
   const [data, setData] = useState({
-    total: 0,
     pending: 0,
     delivery: 0,
     completed: 0,
@@ -23,20 +22,17 @@ export default function Screen() {
   useEffect(() => {
     const fetchData = async () => {
       const [
-        totalOrders,
         totalPendingOrders,
         totalDeliveryOrders,
         totalCompletedOrders,
         totalCartItems,
       ] = await Promise.all([
-        GetTotalOrders(user?.id || ""),
         GetCompletedOrders(user?.id || ""),
         GetPendingOrders(user?.id || ""),
         GetDeliveryOrders(user?.id || ""),
         GetCartItems(user?.id || ""),
       ]);
       setData({
-        total: totalOrders || 0,
         pending: totalPendingOrders || 0,
         delivery: totalDeliveryOrders || 0,
         completed: totalCompletedOrders || 0,
@@ -55,11 +51,10 @@ export default function Screen() {
             {user?.email}
           </Text>
           <View className="mt-5">
-            <Text className="text-xl">Cart Items - {data.carts}</Text>
-            <Text className="text-xl">Orders - {data.total}</Text>
-            <Text className="text-xl">Completed Orders - {data.completed}</Text>
-            <Text className="text-xl">Out For Delivery - {data.delivery}</Text>
-            <Text className="text-xl">Pending Orders - {data.pending}</Text>
+            <ProfileCard name="Cart Items" number={data.carts} />
+            <ProfileCard name="Completed Orders" number={data.completed} />
+            <ProfileCard name="Out For Delivery" number={data.delivery} />
+            <ProfileCard name="Pending Orders" number={data.pending} />
           </View>
         </View>
       </ScrollView>

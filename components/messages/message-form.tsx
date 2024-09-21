@@ -49,7 +49,7 @@ export default function MessageForm() {
         ref={textInputRef}
         multiline
         placeholder="Type a message..."
-        className="flex-1 border border-primary rounded-md px-3 py-2"
+        className="flex-1 border border-primary rounded-md px-3 py-2 text-primary-foreground dark:text-primary"
         value={form.message}
         onChangeText={(e) => setForm({ ...form, message: e })}
         onContentSizeChange={handleContentSizeChange}

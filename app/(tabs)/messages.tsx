@@ -60,10 +60,10 @@ export default function Screen() {
   }, [user?.id]);
 
   useEffect(() => {
-    if (flatListRef.current && messages.length > 0) {
-      flatListRef.current.scrollToOffset({ offset: 0, animated: false });
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: false });
     }
-  }, [messages]);
+  }, [user?.id]);
 
   const loadMoreMessages = () => {
     setPage((prevPage) => prevPage + 1);

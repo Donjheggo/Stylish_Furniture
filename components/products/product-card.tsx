@@ -22,7 +22,7 @@ export default function ProductCard({ item }: { item: ProductsT }) {
           />
 
           <Text className="text-xl" style={{ fontWeight: "bold" }}>
-            ₱ {item.price.toLocaleString()}
+            ₱{item.price.toLocaleString()}
           </Text>
           <Text className="text-xl">{item.name}</Text>
         </TouchableOpacity>

@@ -56,13 +56,16 @@ export default function Screen() {
           )}
           <View className="mt-2">
             <Text className="text-3xl font-semibold">
-              ₱ {product?.price.toLocaleString()}
+              ₱{product?.price.toLocaleString()}
             </Text>
             <Text className="text-2xl" style={{ fontWeight: "semibold" }}>
               {product?.name}
             </Text>
             <Text className="text-lg text-muted-foreground">
               Stock: {product?.quantity}
+            </Text>
+            <Text className="text-lg text-muted-foreground">
+              Shipping: ₱{product?.shipping_fee}
             </Text>
             <Text className="text-xl mt-5">{product?.description}</Text>
           </View>

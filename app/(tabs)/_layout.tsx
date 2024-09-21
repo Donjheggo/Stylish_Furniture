@@ -1,6 +1,7 @@
 import { Tabs, Redirect } from "expo-router";
 import { Package, Armchair, User, ShoppingCart } from "lucide-react-native";
 import { useAuth } from "~/context/auth-context";
+import ShoppingCartIcon from "~/components/tab-cart-icon";
 
 export default function TabLayout() {
   const { user } = useAuth();
@@ -31,7 +32,7 @@ export default function TabLayout() {
         name="cart"
         options={{
           title: "Cart",
-          tabBarIcon: ({ color }) => <ShoppingCart size={28} color={color} />,
+          tabBarIcon: ({ color }) => <ShoppingCartIcon size={28} color={color} />,
         }}
       />
       <Tabs.Screen

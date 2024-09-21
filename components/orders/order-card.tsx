@@ -57,7 +57,7 @@ export default function OrderCard({ item }: { item: OrdersT }) {
                 </View>
                 <View>
                   <Text className="text-xl font-bold">
-                    ₱ {item.total_payable.toLocaleString()}
+                    ₱{item.total_payable.toLocaleString()}
                   </Text>
                 </View>
               </View>

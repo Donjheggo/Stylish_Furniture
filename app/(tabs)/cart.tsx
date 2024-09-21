@@ -66,7 +66,7 @@ export default function Screen() {
                 <Text>Price:</Text>
               </View>
               <View>
-                <Text>₱ {prices.totalPrice.toLocaleString()}</Text>
+                <Text>₱{prices.totalPrice.toLocaleString()}</Text>
               </View>
             </View>
             <View className="flex-row items-center justify-between flex-1">
@@ -74,7 +74,7 @@ export default function Screen() {
                 <Text>Total Shipping:</Text>
               </View>
               <View>
-                <Text>₱ {prices.totalShipping.toLocaleString()}</Text>
+                <Text>₱{prices.totalShipping.toLocaleString()}</Text>
               </View>
             </View>
             <View className="flex-row items-center justify-between flex-1">
@@ -83,7 +83,7 @@ export default function Screen() {
               </View>
               <View>
                 <Text className="text-2xl font-semibold">
-                  ₱ {prices.totalPayable.toLocaleString()}
+                  ₱{prices.totalPayable.toLocaleString()}
                 </Text>
               </View>
             </View>

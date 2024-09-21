@@ -1,3 +1,11 @@
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { Label } from "~/components/ui/label";
@@ -9,6 +17,9 @@ import { Alert } from "react-native";
 import { Checkout, type CheckoutT } from "~/lib/actions/checkout";
 import { GetTotalShippingAndTotalPrice } from "~/lib/actions/checkout";
 import { useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const payment_methods = ["COD", "GCASH"];
 
 export default function Screen() {
   const router = useRouter();
@@ -23,7 +34,17 @@ export default function Screen() {
     name: "",
     address: "",
     contact_number: "",
+    payment_method: null,
+    gcash_reference_number: "",
   });
+
+  const insets = useSafeAreaInsets();
+  const contentInsets = {
+    top: insets.top,
+    bottom: insets.bottom,
+    left: 5,
+    right: 12,
+  };
 
   const handleSubmit = async () => {
     try {
@@ -34,6 +55,8 @@ export default function Screen() {
           name: "",
           address: "",
           contact_number: "",
+          payment_method: null,
+          gcash_reference_number: "",
         });
         setPrices({
           totalPrice: 0,
@@ -106,6 +129,46 @@ export default function Screen() {
           keyboardType="default"
         />
       </View>
+      <Label nativeID="payment_method" className="pb-1">
+        Payment Method
+      </Label>
+      <Select
+        defaultValue={{ value: "", label: "Select Payment Method" }}
+        onValueChange={(value) =>
+          setForm({ ...form, payment_method: value?.value as "COD" | "GCASH" | null })
+        }
+      >
+        <SelectTrigger>
+          <SelectValue
+            className="text-foreground dark:text-white text-sm native:text-lg"
+            placeholder="Select a billing number"
+          />
+        </SelectTrigger>
+        <SelectContent insets={contentInsets}>
+          <SelectGroup>
+            {payment_methods.map((item, index) => (
+              <SelectItem key={index} label={item} value={item}>
+                {item}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      {form.payment_method === "GCASH" && (
+        <View>
+          <Label nativeID="gcash_reference_number" className="pb-1">
+            GCASH Reference Number:
+          </Label>
+          <Input
+            placeholder="00000000000000"
+            value={form.gcash_reference_number}
+            onChangeText={(e) => setForm({ ...form, gcash_reference_number: e })}
+            aria-labelledby="contact_number"
+            aria-errormessage="inputError"
+            keyboardType="default"
+          />
+        </View>
+      )}
       <View className="mt-5">
         <View className="flex-row items-center justify-between">
           <View>

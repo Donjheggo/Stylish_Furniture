@@ -22,7 +22,7 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex flex-row dark:bg-black h-10 native:h-12 items-center text-sm justify-between rounded-md border border-input bg-background px-3 py-2 web:ring-offset-background text-muted-foreground web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1",
+      "flex flex-row dark:bg-black h-10 native:h-12 items-center text-sm justify-between rounded-md border border-input bg-transparent px-3 py-2 web:ring-offset-background text-muted-foreground web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1",
       props.disabled && "web:cursor-not-allowed opacity-50",
       className
     )}
@@ -163,7 +163,11 @@ const SelectItem = React.forwardRef<
   >
     <View className="absolute left-2 native:left-3.5 flex h-3.5 native:pt-px w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check size={16} strokeWidth={3} className="text-popover-foreground dark:text-white" />
+        <Check
+          size={16}
+          strokeWidth={3}
+          className="text-popover-foreground dark:text-white"
+        />
       </SelectPrimitive.ItemIndicator>
     </View>
     <SelectPrimitive.ItemText className="text-sm native:text-lg text-popover-foreground dark:text-white native:text-base web:group-focus:text-accent-foreground" />

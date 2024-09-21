@@ -6,6 +6,8 @@ export type CheckoutT = {
   name: string;
   address: string;
   contact_number: number | string;
+  payment_method: "COD" | "GCASH" | null;
+  gcash_reference_number: string;
 };
 
 export async function GetTotalShippingAndTotalPrice(user_id: string) {
@@ -110,12 +112,13 @@ export async function Checkout(form: CheckoutT) {
         user_id: form.user_id,
         name: form.name,
         address: form.address,
+        payment_method: form.payment_method,
+        gcash_reference_number: form.gcash_reference_number,
         contact_number: Number(form.contact_number),
         total_price: totalPrice,
         total_shipping_fee: totalShippingFee,
         total_payable: totalPayable,
         delivery_status: "PENDING",
-        payment_method: "COD",
       },
     ])
     .select();

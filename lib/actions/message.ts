@@ -39,7 +39,7 @@ export async function GetMessages(
       .from("messages")
       .select("*")
       .or(`sender_id.eq.${user_id},receiver_id.eq.${user_id}`)
-      .order("created_at", { ascending: true })
+      .order("created_at", { ascending: false })
       .range((page - 1) * limit, page * limit - 1);
 
     if (error) {

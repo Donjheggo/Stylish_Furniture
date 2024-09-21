@@ -6,7 +6,8 @@ export async function GetMyOrders(user_id: string) {
     const { data, error } = await supabase
       .from("orders")
       .select("*")
-      .eq("user_id", user_id);
+      .eq("user_id", user_id)
+      .order("created_at", { ascending: false });
 
     if (error) {
       Alert.alert(error.message);
@@ -25,9 +26,11 @@ export async function GetMyOrderById(order_id: string) {
   try {
     const { data, error } = await supabase
       .from("order_items")
-      .select(`*, product_id (name, price, image, shipping_fee)
+      .select(
+        `*, product_id (name, price, image, shipping_fee)
 
-        `)
+        `
+      )
       .eq("order_id", order_id);
 
     if (error) {

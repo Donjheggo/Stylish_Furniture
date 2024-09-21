@@ -1,9 +1,9 @@
 import {
   View,
   SafeAreaView,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  FlatList,
 } from "react-native";
 import MessageCard from "~/components/messages/message-card";
 import MessageForm from "~/components/messages/message-form";
@@ -15,21 +15,30 @@ import { supabase } from "~/lib/supabase";
 import { Text } from "~/components/ui/text";
 import { Image } from "expo-image";
 import { blurhash } from "~/lib/utils";
+import { useRef } from "react";
+
+const messages_per_page = 10;
 
 export default function Screen() {
   const { user } = useAuth();
   const [messages, setMessages] = useState<MessagesT[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const flatListRef = useRef<FlatList>(null);
 
-  const fetchMessages = async () => {
-    const data = await GetMessages(user?.id || "");
+  const fetchMessages = async (pageNumber: number) => {
+    const data = await GetMessages(
+      user?.id || "",
+      pageNumber,
+      messages_per_page
+    );
     if (data) {
-      setMessages(data);
+      setMessages((prevMessages) => [...data.reverse(), ...prevMessages]);
     }
     return;
   };
 
   useEffect(() => {
-    fetchMessages();
+    fetchMessages(page);
 
     const subscription = supabase
       .channel("public:messages")
@@ -41,7 +50,7 @@ export default function Screen() {
           table: "messages",
           filter: `conversation_id=eq.${user?.id}${process.env.EXPO_PUBLIC_ADMIN_ID}`,
         },
-        fetchMessages
+        () => fetchMessages(1)
       )
       .subscribe();
 
@@ -49,6 +58,25 @@ export default function Screen() {
       subscription.unsubscribe();
     };
   }, [user?.id]);
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: false });
+    }
+  }, [user?.id]);
+
+  const loadMoreMessages = () => {
+    setPage((prevPage) => prevPage + 1);
+    fetchMessages(page + 1);
+  };
+
+  const renderMessage = ({ item }: { item: MessagesT }) => (
+    <MessageCard
+      sender_id={item.sender_id}
+      message={item.message}
+      created_at={item.created_at}
+    />
+  );
 
   return (
     <SafeAreaView className="h-full">
@@ -66,18 +94,20 @@ export default function Screen() {
         className="flex-1"
         keyboardVerticalOffset={100}
       >
-        <ScrollView>
-          <View className="p-5">
-            {messages?.map((item, index) => (
-              <MessageCard
-                key={index}
-                sender_id={item.sender_id}
-                message={item.message}
-                created_at={item.created_at}
-              />
-            ))}
-          </View>
-        </ScrollView>
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          renderItem={renderMessage}
+          keyExtractor={(item, index) => `${item.id}-${index}`}
+          onEndReached={loadMoreMessages}
+          onEndReachedThreshold={0.1}
+          inverted
+          contentContainerStyle={{
+            flexDirection: "column-reverse",
+            padding: 20,
+          }}
+        />
+
         <MessageForm />
       </KeyboardAvoidingView>
     </SafeAreaView>

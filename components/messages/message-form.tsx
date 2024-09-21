@@ -14,7 +14,6 @@ export default function MessageForm() {
   const textInputRef = useRef<TextInput>(null);
   const [form, setForm] = useState<MessageT>({
     sender_id: user?.id || "",
-    receiver_id: process.env.EXPO_PUBLIC_ADMIN_ID || "",
     message: "",
   });
 
@@ -25,6 +24,10 @@ export default function MessageForm() {
   };
 
   const handleSubmit = async () => {
+    const trimmedContent = form.message.trim()
+    if(!trimmedContent){
+      return;
+    }
     try {
       const response = await SendMessage(form);
       if (!response) {

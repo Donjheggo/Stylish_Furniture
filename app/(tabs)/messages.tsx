@@ -32,13 +32,18 @@ export default function Screen() {
       messages_per_page
     );
     if (data) {
-      setMessages((prevMessages) => [...data.reverse(), ...prevMessages]);
+      setMessages((prevMessages) => {
+        const newMessages = data.filter(
+          (newMsg) => !prevMessages.some((prevMsg) => prevMsg.id === newMsg.id)
+        );
+        return pageNumber === 1
+          ? [...newMessages]
+          : [...prevMessages, ...newMessages];
+      });
     }
-    return;
   };
-
   useEffect(() => {
-    fetchMessages(page);
+    fetchMessages(1);
 
     const subscription = supabase
       .channel("public:messages")
@@ -50,7 +55,12 @@ export default function Screen() {
           table: "messages",
           filter: `conversation_id=eq.${user?.id}${process.env.EXPO_PUBLIC_ADMIN_ID}`,
         },
-        () => fetchMessages(1)
+        (payload) => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            payload.new as MessagesT,
+          ]);
+        }
       )
       .subscribe();
 
@@ -59,16 +69,11 @@ export default function Screen() {
     };
   }, [user?.id]);
 
-  useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: false });
-    }
-  }, [user?.id]);
-
   const loadMoreMessages = () => {
     setPage((prevPage) => prevPage + 1);
     fetchMessages(page + 1);
   };
+
 
   const renderMessage = ({ item }: { item: MessagesT }) => (
     <MessageCard

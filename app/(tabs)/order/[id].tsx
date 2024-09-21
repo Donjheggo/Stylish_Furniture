@@ -34,7 +34,7 @@ export default function Screen() {
           {orders?.map((item, index) => (
             <View
               key={index}
-              className="flex-row items-center justify-between p-4 bg-white border-b border-gray-200"
+              className="flex-row items-center justify-between p-4 border-b border-primary"
             >
               <View className="flex-row items-center flex-1">
                 <Image

@@ -4,7 +4,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Alert,
 } from "react-native";
 import MessageCard from "~/components/messages/message-card";
 import MessageForm from "~/components/messages/message-form";

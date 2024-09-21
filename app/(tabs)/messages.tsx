@@ -60,10 +60,10 @@ export default function Screen() {
   }, [user?.id]);
 
   useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: false });
+    if (flatListRef.current && messages.length > 0) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: false });
     }
-  }, [user?.id]);
+  }, [messages]);
 
   const loadMoreMessages = () => {
     setPage((prevPage) => prevPage + 1);
@@ -92,6 +92,7 @@ export default function Screen() {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
+        keyboardVerticalOffset={0}
       >
         <FlatList
           ref={flatListRef}

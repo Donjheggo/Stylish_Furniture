@@ -10,7 +10,7 @@ export default function OrderCard({ item }: { item: OrdersT }) {
       asChild
     >
       <TouchableOpacity>
-        <View className="mt-2 only:flex-row items-center justify-between p-4 border-b border-gray-200">
+        <View className="mt-2 only:flex-row items-center justify-between p-4 border-b border-secondary">
           <View className="flex-row items-center flex-1">
             <View className="ml-4 flex-1">
               <View className="flex-row justify-between items-center mt-2">

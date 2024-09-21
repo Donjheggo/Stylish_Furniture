@@ -29,7 +29,7 @@ export default function CartCard({ item }: { item: CartItemT }) {
   };
 
   return (
-    <View className="flex-row items-center justify-between p-4 bg-white border-b border-gray-200">
+    <View className="flex-row items-center justify-between p-4 border-b border-secondary">
       <View className="flex-row items-center flex-1">
         <Image
           source={item.products.image}
@@ -54,7 +54,7 @@ export default function CartCard({ item }: { item: CartItemT }) {
       </View>
       <View className="flex-row items-center">
         <TouchableOpacity
-          className="p-2 bg-card"
+          className="p-2 bg-secondary"
           style={{ borderRadius: 5 }}
           onPress={handleDecrease}
         >
@@ -62,7 +62,7 @@ export default function CartCard({ item }: { item: CartItemT }) {
         </TouchableOpacity>
         <Text className="mx-2 text-lg">{item.quantity}</Text>
         <TouchableOpacity
-          className="p-2 bg-card"
+          className="p-2 bg-secondary"
           style={{ borderRadius: 5 }}
           onPress={handleIncrease}
         >

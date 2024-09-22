@@ -12,7 +12,7 @@ export default function Screen() {
   return (
     <SafeAreaView className="h-full">
       <ScrollView>
-        <View className="px-5">
+        {carts.length > 0 ? <View className="px-5">
           {carts.map((item, index) => (
             <CartCard key={index} item={item} />
           ))}
@@ -53,7 +53,7 @@ export default function Screen() {
               Checkout
             </Text>
           </Button>
-        </View>
+        </View> : <Text className="text-center mt-5 text-2xl">No items in cart</Text>}
       </ScrollView>
     </SafeAreaView>
   );

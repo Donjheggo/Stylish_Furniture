@@ -29,9 +29,9 @@ export default function Screen() {
       totalCompletedOrders,
       totalCartItems,
     ] = await Promise.all([
-      GetCompletedOrders(user?.id || ""),
       GetPendingOrders(user?.id || ""),
       GetDeliveryOrders(user?.id || ""),
+      GetCompletedOrders(user?.id || ""),
       GetCartItems(user?.id || ""),
     ]);
     setData({

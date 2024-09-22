@@ -11,6 +11,7 @@ import { useState } from "react";
 import ProfileCard from "~/components/profile/profile-cards";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import SignoutButton from "~/components/profile/signout-button";
 
 export default function Screen() {
   const { user } = useAuth();
@@ -59,6 +60,7 @@ export default function Screen() {
             <ProfileCard name="Pending Orders" number={data.pending} />
             <ProfileCard name="Out For Delivery" number={data.delivery} />
             <ProfileCard name="Completed Orders" number={data.completed} />
+            <SignoutButton/>
           </View>
         </View>
       </ScrollView>

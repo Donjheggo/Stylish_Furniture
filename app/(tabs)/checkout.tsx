@@ -18,12 +18,17 @@ import { Checkout, type CheckoutT } from "~/lib/actions/checkout";
 import { GetTotalShippingAndTotalPrice } from "~/lib/actions/checkout";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GetGcashNumber } from "~/lib/actions/checkout";
+import { Tables } from "~/database.types";
+
+export type GcashNumberT = Tables<"gcash_number_payment">;
 
 const payment_methods = ["COD", "GCASH"];
 
 export default function Screen() {
   const router = useRouter();
   const { user } = useAuth();
+  const [gcashNumber, setGcashNumber] = useState<GcashNumberT[]>([]);
   const [prices, setPrices] = useState({
     totalPrice: 0,
     totalShipping: 0,
@@ -87,6 +92,17 @@ export default function Screen() {
     fetchPrices();
   }, []);
 
+  useEffect(() => {
+    const fetchGcashNumber = async () => {
+      const number = await GetGcashNumber();
+      if (number) {
+        setGcashNumber(number || []);
+      }
+    };
+
+    fetchGcashNumber();
+  }, []);
+
   return (
     <View className="p-5">
       <Text className="text-center font-semibold text-2xl">Checkout</Text>
@@ -135,7 +151,10 @@ export default function Screen() {
       <Select
         defaultValue={{ value: "", label: "Select Payment Method" }}
         onValueChange={(value) =>
-          setForm({ ...form, payment_method: value?.value as "COD" | "GCASH" | null })
+          setForm({
+            ...form,
+            payment_method: value?.value as "COD" | "GCASH" | null,
+          })
         }
       >
         <SelectTrigger>
@@ -156,13 +175,22 @@ export default function Screen() {
       </Select>
       {form.payment_method === "GCASH" && (
         <View>
+          <Text>Send GCASH amount to this number and input the reference number/s below. </Text>
+          {gcashNumber.map((item, index) => (
+            <Text className="text-xl font-semibold" key={index}>
+              {item.number}
+            </Text>
+          ))}
+
           <Label nativeID="gcash_reference_number" className="pb-1">
             GCASH Reference Number:
           </Label>
           <Input
             placeholder="00000000000000"
             value={form.gcash_reference_number}
-            onChangeText={(e) => setForm({ ...form, gcash_reference_number: e })}
+            onChangeText={(e) =>
+              setForm({ ...form, gcash_reference_number: e })
+            }
             aria-labelledby="contact_number"
             aria-errormessage="inputError"
             keyboardType="default"

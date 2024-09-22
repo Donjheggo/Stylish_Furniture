@@ -65,7 +65,6 @@ export async function Checkout(form: CheckoutT) {
     return false;
   }
 
-
   // Step 1: Fetch Cart Items
   const { data: cartItems, error: cartError } = await supabase
     .from("carts")
@@ -180,5 +179,25 @@ export async function Checkout(form: CheckoutT) {
   } else {
     Alert.alert("Order Submitted.");
     return true;
+  }
+}
+
+export async function GetGcashNumber() {
+  try {
+    const { data, error } = await supabase
+      .from("gcash_number_payment")
+      .select("*");
+
+    if (error) {
+      Alert.alert(error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    if (error instanceof Error) {
+      Alert.alert(error.message);
+      return [];
+    }
   }
 }

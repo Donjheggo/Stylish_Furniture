@@ -87,6 +87,24 @@ export type Database = {
           },
         ]
       }
+      gcash_number_payment: {
+        Row: {
+          created_at: string
+          id: number
+          number: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          number: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          number?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           conversation_id: string

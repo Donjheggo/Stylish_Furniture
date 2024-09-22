@@ -12,6 +12,8 @@ import ProfileCard from "~/components/profile/profile-cards";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import SignoutButton from "~/components/profile/signout-button";
+import { ThemeToggle } from "~/components/ThemeToggle";
+import { Button } from "~/components/ui/button";
 
 export default function Screen() {
   const { user } = useAuth();
@@ -55,12 +57,13 @@ export default function Screen() {
           <Text className="text-center text-3xl font-semibold">
             {user?.email}
           </Text>
-          <View className="mt-5">
+          <View style={{marginTop: 2}}>
             <ProfileCard name="Cart Items" number={data.carts} />
             <ProfileCard name="Pending Orders" number={data.pending} />
             <ProfileCard name="Out For Delivery" number={data.delivery} />
             <ProfileCard name="Completed Orders" number={data.completed} />
-            <SignoutButton/>
+            <ThemeToggle />
+            <SignoutButton />
           </View>
         </View>
       </ScrollView>

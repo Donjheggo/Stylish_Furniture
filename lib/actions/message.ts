@@ -31,16 +31,13 @@ export async function SendMessage(form: MessageT) {
 
 export async function GetMessages(
   user_id: string,
-  page: number,
-  limit: number
 ) {
   try {
     const { data, error } = await supabase
       .from("messages")
       .select("*")
       .or(`sender_id.eq.${user_id},receiver_id.eq.${user_id}`)
-      .order("created_at", { ascending: false })
-      .range((page - 1) * limit, page * limit - 1);
+      .order("created_at", { ascending: true });
 
     if (error) {
       Alert.alert(error.message);

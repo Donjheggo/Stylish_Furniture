@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   FlatList,
+  Alert,
 } from "react-native";
 import MessageCard from "~/components/messages/message-card";
 import MessageForm from "~/components/messages/message-form";
@@ -17,33 +18,20 @@ import { Image } from "expo-image";
 import { blurhash } from "~/lib/utils";
 import { useRef } from "react";
 
-const messages_per_page = 10;
-
 export default function Screen() {
   const { user } = useAuth();
-  const [messages, setMessages] = useState<MessagesT[]>([]);
-  const [page, setPage] = useState<number>(1);
   const flatListRef = useRef<FlatList>(null);
+  const [messages, setMessages] = useState<MessagesT[]>([]);
 
-  const fetchMessages = async (pageNumber: number) => {
-    const data = await GetMessages(
-      user?.id || "",
-      pageNumber,
-      messages_per_page
-    );
+  const fetchMessages = async () => {
+    const data = await GetMessages(user?.id || "");
     if (data) {
-      setMessages((prevMessages) => {
-        const newMessages = data.filter(
-          (newMsg) => !prevMessages.some((prevMsg) => prevMsg.id === newMsg.id)
-        );
-        return pageNumber === 1
-          ? [...newMessages]
-          : [...prevMessages, ...newMessages];
-      });
+      setMessages(data);
     }
   };
+
   useEffect(() => {
-    fetchMessages(1);
+    fetchMessages();
 
     const subscription = supabase
       .channel("public:messages")
@@ -55,12 +43,7 @@ export default function Screen() {
           table: "messages",
           filter: `conversation_id=eq.${user?.id}${process.env.EXPO_PUBLIC_ADMIN_ID}`,
         },
-        (payload) => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            payload.new as MessagesT,
-          ]);
-        }
+        fetchMessages
       )
       .subscribe();
 
@@ -68,12 +51,6 @@ export default function Screen() {
       subscription.unsubscribe();
     };
   }, [user?.id]);
-
-  const loadMoreMessages = () => {
-    setPage((prevPage) => prevPage + 1);
-    fetchMessages(page + 1);
-  };
-
 
   const renderMessage = ({ item }: { item: MessagesT }) => (
     <MessageCard
@@ -104,15 +81,12 @@ export default function Screen() {
           data={messages}
           renderItem={renderMessage}
           keyExtractor={(item, index) => `${item.id}-${index}`}
-          onEndReached={loadMoreMessages}
           onEndReachedThreshold={0.1}
-          inverted
           contentContainerStyle={{
-            flexDirection: "column-reverse",
+            flexDirection: "column",
             padding: 20,
           }}
         />
-
         <MessageForm />
       </KeyboardAvoidingView>
     </SafeAreaView>

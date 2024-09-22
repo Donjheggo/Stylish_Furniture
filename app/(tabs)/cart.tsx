@@ -12,48 +12,52 @@ export default function Screen() {
   return (
     <SafeAreaView className="h-full">
       <ScrollView>
-        {carts.length > 0 ? <View className="px-5">
-          {carts.map((item, index) => (
-            <CartCard key={index} item={item} />
-          ))}
-          <View className="mt-5">
-            <View className="flex-row items-center justify-between flex-1">
-              <View>
-                <Text>Price:</Text>
+        {carts.length > 0 ? (
+          <View className="px-5">
+            {carts.map((item, index) => (
+              <CartCard key={index} item={item} />
+            ))}
+            <View className="mt-5">
+              <View className="flex-row items-center justify-between flex-1">
+                <View>
+                  <Text>Price:</Text>
+                </View>
+                <View>
+                  <Text>₱{prices.totalPrice.toLocaleString()}</Text>
+                </View>
               </View>
-              <View>
-                <Text>₱{prices.totalPrice.toLocaleString()}</Text>
+              <View className="flex-row items-center justify-between flex-1">
+                <View>
+                  <Text>Total Shipping:</Text>
+                </View>
+                <View>
+                  <Text>₱{prices.totalShipping.toLocaleString()}</Text>
+                </View>
+              </View>
+              <View className="flex-row items-center justify-between flex-1">
+                <View>
+                  <Text>Total Payable:</Text>
+                </View>
+                <View>
+                  <Text className="text-2xl font-semibold">
+                    ₱{prices.totalPayable.toLocaleString()}
+                  </Text>
+                </View>
               </View>
             </View>
-            <View className="flex-row items-center justify-between flex-1">
-              <View>
-                <Text>Total Shipping:</Text>
-              </View>
-              <View>
-                <Text>₱{prices.totalShipping.toLocaleString()}</Text>
-              </View>
-            </View>
-            <View className="flex-row items-center justify-between flex-1">
-              <View>
-                <Text>Total Payable:</Text>
-              </View>
-              <View>
-                <Text className="text-2xl font-semibold">
-                  ₱{prices.totalPayable.toLocaleString()}
-                </Text>
-              </View>
-            </View>
+            <Button
+              size="lg"
+              className="mt-2"
+              onPress={() => router.push("/(tabs)/checkout")}
+            >
+              <Text className="text-white" style={{ fontSize: 20 }}>
+                Checkout
+              </Text>
+            </Button>
           </View>
-          <Button
-            size="lg"
-            className="mt-2"
-            onPress={() => router.push("/(tabs)/checkout")}
-          >
-            <Text className="text-white" style={{ fontSize: 20 }}>
-              Checkout
-            </Text>
-          </Button>
-        </View> : <Text className="text-center mt-5 text-2xl">No items in cart</Text>}
+        ) : (
+          <Text className="text-center mt-5 text-2xl">No items in cart</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

@@ -6,8 +6,10 @@ import { blurhash } from "~/lib/utils";
 import type { CartItemT } from "~/app/(tabs)/cart";
 import { Plus, Minus } from "lucide-react-native";
 import { IncreaseQuantity, DecreaseQuantity } from "~/lib/actions/carts";
+import { useCart } from "~/context/cart-context";
 
 export default function CartCard({ item }: { item: CartItemT }) {
+  const { fetchCartData } = useCart();
   const handleIncrease = async () => {
     try {
       await IncreaseQuantity(item.id);
@@ -20,7 +22,8 @@ export default function CartCard({ item }: { item: CartItemT }) {
 
   const handleDecrease = async () => {
     try {
-      await DecreaseQuantity(item.id);
+      const response = await DecreaseQuantity(item.id);
+      if (response?.action === "deleted") fetchCartData();
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);

@@ -20,12 +20,14 @@ import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GetGcashNumber } from "~/lib/actions/checkout";
 import { Tables } from "~/database.types";
+import { useCart } from "~/context/cart-context";
 
 export type GcashNumberT = Tables<"gcash_number_payment">;
 
 const payment_methods = ["COD", "GCASH"];
 
 export default function Screen() {
+  const { fetchCartData } = useCart();
   const router = useRouter();
   const { user } = useAuth();
   const [gcashNumber, setGcashNumber] = useState<GcashNumberT[]>([]);
@@ -68,6 +70,7 @@ export default function Screen() {
           totalShipping: 0,
           totalPayable: 0,
         });
+        fetchCartData()
         router.push("/(tabs)/orders");
         return success;
       } else {

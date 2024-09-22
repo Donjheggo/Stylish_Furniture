@@ -81,6 +81,7 @@ export default function Screen() {
           data={messages}
           renderItem={renderMessage}
           keyExtractor={(item, index) => `${item.id}-${index}`}
+          inverted
           onEndReachedThreshold={0.1}
           contentContainerStyle={{
             flexDirection: "column",

@@ -1,57 +1,13 @@
 import { View, SafeAreaView, ScrollView } from "react-native";
-import { useState, useEffect } from "react";
 import CartCard from "~/components/carts/cart-card";
-import { GetCarts } from "~/lib/actions/carts";
-import { useAuth } from "~/context/auth-context";
-import { supabase } from "~/lib/supabase";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { GetTotalShippingAndTotalPrice } from "~/lib/actions/checkout";
 import { useRouter } from "expo-router";
+import { useCart } from "~/context/cart-context";
 
 export default function Screen() {
   const router = useRouter();
-  const { user } = useAuth();
-  const [carts, setCarts] = useState<CartItemT[]>([]);
-  const [prices, setPrices] = useState({
-    totalPrice: 0,
-    totalShipping: 0,
-    totalPayable: 0,
-  });
-
-  const fetchCartAndPrices = async () => {
-    const carts = await GetCarts(user?.id || "");
-    setCarts(carts || []);
-
-    const data = await GetTotalShippingAndTotalPrice(user?.id || "");
-    setPrices({
-      totalPrice: data?.totalPrice || 0,
-      totalShipping: data?.totalShippingFee || 0,
-      totalPayable: data?.totalPayable || 0,
-    });
-  };
-
-  useEffect(() => {
-    fetchCartAndPrices();
-
-    const subscription = supabase
-      .channel("public:carts")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "carts",
-          filter: `user_id=eq.${user?.id}`,
-        },
-        fetchCartAndPrices
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [user]);
+  const { carts, prices } = useCart();
 
   return (
     <SafeAreaView className="h-full">

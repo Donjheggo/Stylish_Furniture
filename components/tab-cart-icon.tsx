@@ -1,10 +1,7 @@
 import { ShoppingCart } from "lucide-react-native";
 import { View, StyleSheet } from "react-native";
 import { Text } from "./ui/text";
-import { GetCartItems } from "~/lib/actions/profile";
-import { useState, useEffect } from "react";
-import { useAuth } from "~/context/auth-context";
-import { supabase } from "~/lib/supabase";
+import { useCart } from "~/context/cart-context";
 
 export default function ShoppingCartIcon({
   size,
@@ -13,34 +10,7 @@ export default function ShoppingCartIcon({
   size: number;
   color: string;
 }) {
-  const { user } = useAuth();
-  const [cartTotal, setCartTotal] = useState<number>(0);
-
-  const fetchCart = async () => {
-    const total = await GetCartItems(user?.id || "");
-    setCartTotal(total || 0);
-  };
-  useEffect(() => {
-    fetchCart();
-
-    const subscription = supabase
-      .channel("public:carts")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "carts",
-          filter: `user_id=eq.${user?.id}`,
-        },
-        fetchCart
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [user?.id]);
+  const { cartTotal } = useCart();
 
   return (
     <View style={styles.container}>

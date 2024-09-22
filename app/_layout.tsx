@@ -13,6 +13,7 @@ import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import MessageButton from "~/components/message-button";
 import AuthProvider from "~/context/auth-context";
 import BackButton from "~/components/back-button";
+import { CartProvider } from "~/context/cart-context";
 import { usePathname } from "expo-router";
 
 const LIGHT_THEME: Theme = {
@@ -70,32 +71,34 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <AuthProvider>
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="index"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
-            name="(auth)"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              title: "",
-              headerShown: pathname === "/messages" ? false : true,
-              headerLeft:
-                pathname !== "/products" ? () => <BackButton /> : () => "",
-              headerRight: () => <MessageButton />,
-            }}
-          />
-        </Stack>
-        <PortalHost />
+        <CartProvider>
+          <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="index"
+              options={{
+                title: "",
+              }}
+            />
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                title: "",
+              }}
+            />
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                title: "",
+                headerShown: pathname === "/messages" ? false : true,
+                headerLeft:
+                  pathname !== "/products" ? () => <BackButton /> : () => "",
+                headerRight: () => <MessageButton />,
+              }}
+            />
+          </Stack>
+          <PortalHost />
+        </CartProvider>
       </AuthProvider>
     </ThemeProvider>
   );

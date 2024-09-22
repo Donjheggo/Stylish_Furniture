@@ -7,8 +7,10 @@ import {
 import { View, SafeAreaView, ScrollView } from "react-native";
 import { Text } from "~/components/ui/text";
 import { useAuth } from "~/context/auth-context";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProfileCard from "~/components/profile/profile-cards";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 export default function Screen() {
   const { user } = useAuth();
@@ -19,29 +21,31 @@ export default function Screen() {
     carts: 0,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const [
-        totalPendingOrders,
-        totalDeliveryOrders,
-        totalCompletedOrders,
-        totalCartItems,
-      ] = await Promise.all([
-        GetCompletedOrders(user?.id || ""),
-        GetPendingOrders(user?.id || ""),
-        GetDeliveryOrders(user?.id || ""),
-        GetCartItems(user?.id || ""),
-      ]);
-      setData({
-        pending: totalPendingOrders || 0,
-        delivery: totalDeliveryOrders || 0,
-        completed: totalCompletedOrders || 0,
-        carts: totalCartItems || 0,
-      });
-    };
+  const fetchData = async () => {
+    const [
+      totalPendingOrders,
+      totalDeliveryOrders,
+      totalCompletedOrders,
+      totalCartItems,
+    ] = await Promise.all([
+      GetCompletedOrders(user?.id || ""),
+      GetPendingOrders(user?.id || ""),
+      GetDeliveryOrders(user?.id || ""),
+      GetCartItems(user?.id || ""),
+    ]);
+    setData({
+      pending: totalPendingOrders || 0,
+      delivery: totalDeliveryOrders || 0,
+      completed: totalCompletedOrders || 0,
+      carts: totalCartItems || 0,
+    });
+  };
 
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   return (
     <SafeAreaView className="h-full">

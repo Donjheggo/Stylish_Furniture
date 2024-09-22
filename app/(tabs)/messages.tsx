@@ -62,7 +62,7 @@ export default function Screen() {
 
   return (
     <SafeAreaView className="h-full">
-      <View className="border-b border-primary flex-row items-center px-5 py-2 gap-2">
+      <View className={`border-b border-primary flex-row items-center px-5 py-2 gap-2 ${Platform.OS === 'android' ? 'mt-10' : ''}`}>
         <Image
           source={require("~/assets/images/icon.png")}
           style={{ width: 40, height: 40, borderRadius: 8 }}

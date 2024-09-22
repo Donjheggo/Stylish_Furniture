@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Stylish Furniture",
-    "slug": "stylish_furniture",
+    "name": "Water Billing",
+    "slug": "water-billing",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.caroljhegg.waterbilling"
+      "package": "com.caroljhegg.stylish_furniture"
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +39,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "3fb97564-1ba9-4750-9eef-c93680522ba5"
+        "projectId": "1f0706f9-8822-445e-8f6d-aa58672c4411"
       }
     }
   }

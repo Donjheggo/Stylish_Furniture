@@ -48,59 +48,20 @@ export type Database = {
           },
         ]
       }
-      feedbacks: {
-        Row: {
-          created_at: string
-          id: string
-          message: string
-          owner_email: string
-          owner_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          message: string
-          owner_email: string
-          owner_id?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          message?: string
-          owner_email?: string
-          owner_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "feedbacks_owner_email_fkey"
-            columns: ["owner_email"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["email"]
-          },
-          {
-            foreignKeyName: "feedbacks_owner_id_fkey"
-            columns: ["owner_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       gcash_number_payment: {
         Row: {
           created_at: string
-          id: number
+          id: string
           number: string
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           number: string
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           number?: string
         }
         Relationships: []
@@ -154,29 +115,29 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          order_id: string | null
-          price: number | null
-          product_id: string | null
-          quantity: number | null
-          shipping_fee: number | null
+          order_id: string
+          price: number
+          product_id: string
+          quantity: number
+          shipping_fee: number
         }
         Insert: {
           created_at?: string
           id?: string
-          order_id?: string | null
-          price?: number | null
-          product_id?: string | null
-          quantity?: number | null
-          shipping_fee?: number | null
+          order_id?: string
+          price: number
+          product_id?: string
+          quantity: number
+          shipping_fee: number
         }
         Update: {
           created_at?: string
           id?: string
-          order_id?: string | null
-          price?: number | null
-          product_id?: string | null
-          quantity?: number | null
-          shipping_fee?: number | null
+          order_id?: string
+          price?: number
+          product_id?: string
+          quantity?: number
+          shipping_fee?: number
         }
         Relationships: [
           {
@@ -198,7 +159,6 @@ export type Database = {
       orders: {
         Row: {
           address: string
-          completed_at: string | null
           contact_number: number
           created_at: string
           delivery_schedule: string | null
@@ -214,7 +174,6 @@ export type Database = {
         }
         Insert: {
           address: string
-          completed_at?: string | null
           contact_number: number
           created_at?: string
           delivery_schedule?: string | null
@@ -230,7 +189,6 @@ export type Database = {
         }
         Update: {
           address?: string
-          completed_at?: string | null
           contact_number?: number
           created_at?: string
           delivery_schedule?: string | null
@@ -259,33 +217,72 @@ export type Database = {
           created_at: string
           description: string
           id: string
-          image: string | null
+          image: string
           name: string
           price: number
           quantity: number
-          shipping_fee: number | null
+          shipping_fee: number
         }
         Insert: {
           created_at?: string
           description: string
           id?: string
-          image?: string | null
+          image: string
           name: string
           price: number
           quantity: number
-          shipping_fee?: number | null
+          shipping_fee: number
         }
         Update: {
           created_at?: string
           description?: string
           id?: string
-          image?: string | null
+          image?: string
           name?: string
           price?: number
           quantity?: number
-          shipping_fee?: number | null
+          shipping_fee?: number
         }
         Relationships: []
+      }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          product_id?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
@@ -309,15 +306,7 @@ export type Database = {
           name?: string | null
           role?: Database["public"]["Enums"]["USER_ROLE"]
         }
-        Relationships: [
-          {
-            foreignKeyName: "users_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
@@ -417,4 +406,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

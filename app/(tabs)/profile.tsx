@@ -9,7 +9,7 @@ import { Text } from "~/components/ui/text";
 import { useAuth } from "~/context/auth-context";
 import { useState } from "react";
 import ProfileCard from "~/components/profile/profile-cards";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
 import SignoutButton from "~/components/profile/signout-button";
 import { ThemeToggle } from "~/components/ThemeToggle";

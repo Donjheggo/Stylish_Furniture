@@ -15,7 +15,6 @@ export default function ProductCard({ item }: { item: ProductsT }) {
         <TouchableOpacity>
           <Image
             source={item.image}
-            placeholder={{ blurhash }}
             contentFit="cover"
             style={{ height: 175, borderRadius: 10 }}
             transition={1000}

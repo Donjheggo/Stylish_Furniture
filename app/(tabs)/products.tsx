@@ -1,5 +1,12 @@
 import SearchBar from "~/components/products/search-bar";
-import { View, SafeAreaView, ScrollView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  ScrollView,
+  FlatList,
+  Platform,
+  StatusBar,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { Tables } from "~/database.types";
 import { SearchProducts } from "~/lib/actions/products";
@@ -19,25 +26,30 @@ export default function Screen() {
   }, [query]);
 
   return (
-    <SafeAreaView className="h-full">
-      <ScrollView>
-        <View className="p-5">
-          <SearchBar />
-          <View
-            className="gap-2"
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              marginTop: 15,
-            }}
-          >
-            {products?.map((item, index) => (
-              <ProductCard item={item} key={index} />
-            ))}
-          </View>
+    <SafeAreaView
+      className="h-full"
+      style={{
+        flex: 1,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      }}
+    >
+      <View className="p-5">
+        <SearchBar />
+        <View
+          style={{
+            marginTop: 15,
+            marginBottom: 100,
+          }}
+        >
+          <FlatList
+            data={products}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            keyExtractor={(_, index) => `${index}`}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+          />
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

@@ -90,7 +90,6 @@ export default function Screen() {
           <View className="p-5">
             {product?.image && (
               <Image
-                placeholder={{ blurhash }}
                 source={product?.image}
                 style={{ borderRadius: 10, height: 360 }}
                 contentFit="cover"

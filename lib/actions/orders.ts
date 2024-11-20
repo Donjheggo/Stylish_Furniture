@@ -46,3 +46,27 @@ export async function GetMyOrderById(order_id: string) {
     }
   }
 }
+
+export async function CancelOrder(order_id: string) {
+  try {
+    const { error } = await supabase
+      .from("orders")
+      .update({
+        delivery_status: "CANCELLED",
+      })
+      .eq("id", order_id)
+      .select();
+
+    if (error) {
+      Alert.alert(error.message);
+      return false;
+    }
+    Alert.alert("Ordered cancelled");
+    return true;
+  } catch (error) {
+    if (error instanceof Error) {
+      Alert.alert(error.message);
+      return false;
+    }
+  }
+}

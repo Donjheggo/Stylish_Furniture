@@ -2,6 +2,7 @@ import { View, TouchableOpacity } from "react-native";
 import { Text } from "../ui/text";
 import { OrdersT } from "~/app/(tabs)/orders";
 import { Link } from "expo-router";
+import CancelOrderButton from "./cancel-order-button";
 
 export default function OrderCard({ item }: { item: OrdersT }) {
   return (
@@ -61,6 +62,11 @@ export default function OrderCard({ item }: { item: OrdersT }) {
                   </Text>
                 </View>
               </View>
+              {item.delivery_status === "PENDING" && (
+                <View className="flex flex-row justify-center border rounded-xl mt-4">
+                  <CancelOrderButton id={item.id} />
+                </View>
+              )}
             </View>
           </View>
         </View>
